@@ -1,10 +1,6 @@
 VERSION_INFO = 1:0:0
 
-if BUILD_WINCOMPAT        
-AM_CFLAGS = -fpie -pie -g -O2 -Wall -Werror -Wno-deprecated-declarations -fno-strict-aliasing -std=gnu99 -D_GNU_SOURCE -static
-else
-AM_CFLAGS = -g -O2 -Wall -Werror -Wno-deprecated-declarations -fno-strict-aliasing -std=gnu99 -D_GNU_SOURCE -static 
-endif
+AM_CFLAGS = -fPIC -g -O2 -Wall -Werror -Wno-deprecated-declarations -fno-strict-aliasing -std=gnu99 -D_GNU_SOURCE -static 
 AM_CFLAGS += $(PTHREAD_CFLAGS)
 #if !USE_SYSTEM_SHARED_LIB
 AM_CFLAGS += -I$(top_srcdir)/libev
@@ -112,7 +108,7 @@ endif
 lib_LTLIBRARIES = libshadowsocks.la
 libshadowsocks_la_SOURCES = $(ss_local_SOURCES)
 libshadowsocks_la_CFLAGS = $(ss_local_CFLAGS) -DLIB_ONLY
-libshadowsocks_la_LDFLAGS = -static -flto -version-info $(VERSION_INFO)
+libshadowsocks_la_LDFLAGS = -version-info $(VERSION_INFO)
 libshadowsocks_la_LIBADD = $(ss_local_LDADD)
 include_HEADERS = shadowsocks.h
 
@@ -131,7 +127,6 @@ libshadowsocks_server_la_SOURCES = utils.c \
                     shadowsocks-server.c \
                     win32.c 
 
-libshadowsocks_server_la_CFLAGS = $(ss_server_CFLAGS)  -DLIB_ONLY 
-libshadowsocks_server_la_LDFLAGS = -shared -avoid-version -module -no-undefined  -version-info $(VERSION_INFO)
+libshadowsocks_server_la_CFLAGS = $(ss_server_CFLAGS)  
 libshadowsocks_server_la_LIBADD = $(ss_server_LDADD)
 endif 

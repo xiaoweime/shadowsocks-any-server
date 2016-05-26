@@ -185,8 +185,8 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 libshadowsocks_server_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(libshadowsocks_server_la_CFLAGS) $(CFLAGS) \
-	$(libshadowsocks_server_la_LDFLAGS) $(LDFLAGS) -o $@
+	$(libshadowsocks_server_la_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 @BUILD_WINCOMPAT_TRUE@am_libshadowsocks_server_la_rpath = -rpath \
 @BUILD_WINCOMPAT_TRUE@	$(libdir)
 am__DEPENDENCIES_4 = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) \
@@ -473,26 +473,13 @@ top_srcdir = @top_srcdir@
 VERSION_INFO = 1:0:0
 #if !USE_SYSTEM_SHARED_LIB
 #endif
-@BUILD_WINCOMPAT_FALSE@AM_CFLAGS = -g -O2 -Wall -Werror \
-@BUILD_WINCOMPAT_FALSE@	-Wno-deprecated-declarations \
-@BUILD_WINCOMPAT_FALSE@	-fno-strict-aliasing -std=gnu99 \
-@BUILD_WINCOMPAT_FALSE@	-D_GNU_SOURCE -static $(PTHREAD_CFLAGS) \
-@BUILD_WINCOMPAT_FALSE@	-I$(top_srcdir)/libev \
-@BUILD_WINCOMPAT_FALSE@	-I$(top_srcdir)/libudns \
-@BUILD_WINCOMPAT_FALSE@	-I$(top_srcdir)/libsodium/src/libsodium/include \
-@BUILD_WINCOMPAT_FALSE@	-I$(top_srcdir)/libipset/include \
-@BUILD_WINCOMPAT_FALSE@	-I$(top_srcdir)/libcork/include
-#if !USE_SYSTEM_SHARED_LIB
-#endif
-@BUILD_WINCOMPAT_TRUE@AM_CFLAGS = -fpie -pie -g -O2 -Wall -Werror \
-@BUILD_WINCOMPAT_TRUE@	-Wno-deprecated-declarations \
-@BUILD_WINCOMPAT_TRUE@	-fno-strict-aliasing -std=gnu99 \
-@BUILD_WINCOMPAT_TRUE@	-D_GNU_SOURCE -static $(PTHREAD_CFLAGS) \
-@BUILD_WINCOMPAT_TRUE@	-I$(top_srcdir)/libev \
-@BUILD_WINCOMPAT_TRUE@	-I$(top_srcdir)/libudns \
-@BUILD_WINCOMPAT_TRUE@	-I$(top_srcdir)/libsodium/src/libsodium/include \
-@BUILD_WINCOMPAT_TRUE@	-I$(top_srcdir)/libipset/include \
-@BUILD_WINCOMPAT_TRUE@	-I$(top_srcdir)/libcork/include
+AM_CFLAGS = -fPIC -g -O2 -Wall -Werror -Wno-deprecated-declarations \
+	-fno-strict-aliasing -std=gnu99 -D_GNU_SOURCE -static \
+	$(PTHREAD_CFLAGS) -I$(top_srcdir)/libev \
+	-I$(top_srcdir)/libudns \
+	-I$(top_srcdir)/libsodium/src/libsodium/include \
+	-I$(top_srcdir)/libipset/include \
+	-I$(top_srcdir)/libcork/include
 #if USE_SYSTEM_SHARED_LIB
 #SS_COMMON_LIBS += -lev -lsodium -lm 
 #else
@@ -539,7 +526,7 @@ ss_manager_CFLAGS = $(AM_CFLAGS) -DMODULE_MANAGER
 lib_LTLIBRARIES = libshadowsocks.la $(am__append_12)
 libshadowsocks_la_SOURCES = $(ss_local_SOURCES)
 libshadowsocks_la_CFLAGS = $(ss_local_CFLAGS) -DLIB_ONLY
-libshadowsocks_la_LDFLAGS = -static -flto -version-info $(VERSION_INFO)
+libshadowsocks_la_LDFLAGS = -version-info $(VERSION_INFO)
 libshadowsocks_la_LIBADD = $(ss_local_LDADD)
 include_HEADERS = shadowsocks.h
 @BUILD_WINCOMPAT_TRUE@libshadowsocks_server_la_SOURCES = utils.c \
@@ -554,8 +541,7 @@ include_HEADERS = shadowsocks.h
 @BUILD_WINCOMPAT_TRUE@                    shadowsocks-server.c \
 @BUILD_WINCOMPAT_TRUE@                    win32.c 
 
-@BUILD_WINCOMPAT_TRUE@libshadowsocks_server_la_CFLAGS = $(ss_server_CFLAGS)  -DLIB_ONLY 
-@BUILD_WINCOMPAT_TRUE@libshadowsocks_server_la_LDFLAGS = -shared -avoid-version -module -no-undefined  -version-info $(VERSION_INFO)
+@BUILD_WINCOMPAT_TRUE@libshadowsocks_server_la_CFLAGS = $(ss_server_CFLAGS)  
 @BUILD_WINCOMPAT_TRUE@libshadowsocks_server_la_LIBADD = $(ss_server_LDADD)
 all: all-am
 
